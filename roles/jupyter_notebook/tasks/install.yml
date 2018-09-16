@@ -1,0 +1,37 @@
+---
+- name: Setup all the repositories
+  yum: name={{ item }}
+       state=present
+  with_items: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].repos }}'
+
+- name: Install all required packages
+  yum: name={{ item }}
+       state=latest
+  with_items: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].packages }}'
+  notify:
+    - Stop iptables
+
+- name: Install all Python packages
+  pip: name={{ item }}
+       executable=/usr/bin/pip3.6
+       state=latest
+  with_items: '{{ jupyter_notebook.python_packages }}'
+
+- name: Download NLTK data
+  shell: python3.6 -m nltk.downloader -d /usr/local/share/nltk_data all
+
+- name: Fix umask issue when installing packages with pip
+  shell: 'find {{ item }} -type d -exec chmod 755 {} \;'
+  with_items:
+    - '/data/nltk_data/'
+    - '/usr/lib/python3.6/'
+    - '/usr/lib64/python3.6/'
+    - '/usr/share/'
+
+- name: Fix umask issue when installing packages with pip
+  shell: 'find {{ item }} -type f -exec chmod 644 {} \;'
+  with_items:
+    - '/data/nltk_data/'
+    - '/usr/lib/python3.6/'
+    - '/usr/lib64/python3.6/'
+    - '/usr/share/'

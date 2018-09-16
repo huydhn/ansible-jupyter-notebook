@@ -1,0 +1,72 @@
+---
+jupyter_notebook:
+  distro:
+    'centos':
+      '7':
+        repos:
+          - 'https://archive.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+          - 'https://centos7.iuscommunity.org/ius-release.rpm'
+
+        packages:
+          - 'enchant-devel'
+          - 'gcc'
+          - 'gcc-c++'
+          - 'java-1.8.0-openjdk'
+          - 'libSM-devel'
+          - 'opencv-devel'
+          - 'python36u'
+          - 'python36u-devel'
+          - 'python36u-pip'
+          - 'python-pexpect'
+          - 'python-ptyprocess'
+          - 'R'
+          - 'telnet'
+          - 'vim'
+          - 'https://download2.rstudio.org/rstudio-server-rhel-1.1.456-x86_64.rpm'
+
+  python_packages:
+    - awscli
+    - beautifulsoup4
+    - boto3
+    - botocore
+    - cython
+    - jupyter
+    - fastai
+    - graphviz
+    - h5py
+    - jmespath
+    - kaggle-cli
+    - keras
+    - keras-adversarial
+    - keras-vis
+    - marathon
+    - matplotlib
+    - mmh
+    - mpmath
+    - networkx
+    - nltk
+    - numpy
+    - opencv-python
+    - pandas
+    - torch
+    - torchvision
+    - pexpect
+    - ptyprocess
+    - pyenchant
+    - python-crfsuite
+    - pyspark
+    - quiver
+    - rabbitpy
+    - redis
+    - requests
+    - s3transfer
+    - scikit-image
+    - scikit-learn
+    - scipy
+    - sklearn-crfsuite
+    - sklearn-pandas
+    - statsmodels
+    - tensorboard
+    - tensorflow
+    - tensorflow-hub
+    - theano

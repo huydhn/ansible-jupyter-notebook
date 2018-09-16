@@ -1,0 +1,7 @@
+[tag_Name_jupyter_notebook]
+
+[jupyter_notebook:children]
+tag_Name_jupyter_notebook
+
+[aws:children]
+jupyter_notebook

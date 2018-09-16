@@ -1,0 +1,17 @@
+---
+- name: Format EBS volume for /data
+  filesystem: fstype=xfs
+              dev={{ jupyter_notebook_attached_volume | default('/dev/blockdevice') }}
+
+- name: Mount /data
+  mount: name=/data
+         src={{ jupyter_notebook_attached_volume | default('/dev/blockdevice') }}
+         fstype=xfs
+         state=mounted
+
+- name: Update /data to be owned by jupyter
+  file: path=/data
+        state=directory
+        owner=jupyter
+        group=jupyter
+        mode=0777

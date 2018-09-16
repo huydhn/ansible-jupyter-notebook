@@ -1,0 +1,14 @@
+[Unit]
+Description=Jupyter Notebook
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/jupyter notebook --config=/home/jupyter/.jupyter/jupyter_notebook_config.py --ip=0.0.0.0 --notebook-dir=/data
+User=jupyter
+Group=jupyter
+WorkingDirectory=/data
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

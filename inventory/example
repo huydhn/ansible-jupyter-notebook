@@ -1,0 +1,8 @@
+[localhost]
+127.0.0.1 ansible_connection=local
+
+[jupyter_notebook:children]
+localhost
+
+[example:children]
+jupyter_notebook

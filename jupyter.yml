@@ -1,0 +1,20 @@
+---
+- name: Provision the Jupyter instance
+  hosts: jupyter_notebook
+  become: yes
+  gather_facts: no
+  pre_tasks:
+    - name: Wait 10 minutes for port 22 to become open on the host
+      wait_for:
+        host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+        port: 22
+        sleep: 10
+      connection: local
+      become: no
+      tags: ['always']
+
+    - name: Gather fact
+      setup:
+      tags: ['always']
+  roles:
+    - jupyter_notebook

@@ -1,0 +1,13 @@
+---
+- name: Stop iptables
+  service: name='iptables'
+           state=stopped
+           enabled=no
+
+- name: Restart jupyter notebook
+  systemd: name=jupyter
+           state=restarted
+
+- name: Restart rstudio
+  systemd: name=rstudio-server
+           state=restarted
