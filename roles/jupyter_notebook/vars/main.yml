@@ -22,6 +22,7 @@ jupyter_notebook:
           - 'R'
           - 'telnet'
           - 'vim'
+          - 'texlive'
           - 'https://download2.rstudio.org/rstudio-server-rhel-1.1.456-x86_64.rpm'
 
   python_packages:
