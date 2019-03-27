@@ -1,13 +1,11 @@
 ---
 - name: Setup all the repositories
-  yum: name={{ item }}
+  yum: name={{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].repos }}
        state=present
-  with_items: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].repos }}'
 
 - name: Install all required packages
-  yum: name={{ item }}
+  yum: name={{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].packages }}
        state=latest
-  with_items: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].packages }}'
   notify:
     - Stop iptables
 

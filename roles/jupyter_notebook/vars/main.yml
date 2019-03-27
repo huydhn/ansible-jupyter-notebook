@@ -23,7 +23,7 @@ jupyter_notebook:
           - 'telnet'
           - 'vim'
           - 'texlive'
-          - 'https://download2.rstudio.org/rstudio-server-rhel-1.1.456-x86_64.rpm'
+          - 'https://download1.rstudio.org/rstudio-1.1.463-x86_64.rpm'
 
   python_packages:
     - awscli
