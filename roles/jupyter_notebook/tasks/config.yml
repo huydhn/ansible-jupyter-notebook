@@ -1,51 +1,56 @@
 ---
 - name: Generate the notebook configuration
-  shell: jupyter notebook --generate-config -y
+  shell: "{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}/bin/jupyter notebook --generate-config -y"
   become_user: jupyter
 
 - name: Generate a new default password
   expect:
-    command: /usr/bin/jupyter notebook password
+    command: "{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}/bin/jupyter notebook password"
     responses:
       Enter password: "{{ jupyter_notebook_password | default('changeme') }}"
       Verify password: "{{ jupyter_notebook_password | default('changeme') }}"
   become_user: jupyter
 
 - name: Create Keras config directory
-  file: path=~/.keras
-        state=directory
-        owner=jupyter
-        group=jupyter
-        mode=0755
+  file:
+    path: ~/.keras
+    state: directory
+    owner: jupyter
+    group: jupyter
+    mode: 0755
   become_user: jupyter
 
 - name: Configure Keras
-  copy: src={{ item }}
-        dest=~/.keras/{{ item }}
-        owner=jupyter
-        group=jupyter
-        mode=0644
+  copy:
+    src: '{{ item }}'
+    dest: '~/.keras/{{ item }}'
+    owner: jupyter
+    group: jupyter
+    mode: 0644
   with_items:
     - 'keras.json'
   become_user: jupyter
 
 - name: Make jupyter a systemd service
-  template: src='{{ item }}'
-            dest='/{{ item }}'
-            owner=root
-            group=root
-            mode=0755
+  template:
+    src: '{{ item }}'
+    dest: '/{{ item }}'
+    owner: root
+    group: root
+    mode: 0755
   with_items:
     - 'etc/systemd/system/jupyter.service'
 
 - name: Start jupyter notebook
-  systemd: daemon_reload=yes
-           enabled=yes
-           name=jupyter
-           state=started
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    name: jupyter
+    state: started
 
 - name: Start rstudio
-  systemd: daemon_reload=yes
-           enabled=yes
-           name=rstudio-server
-           state=started
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    name: rstudio-server
+    state: started

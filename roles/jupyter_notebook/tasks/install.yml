@@ -1,35 +1,51 @@
 ---
 - name: Setup all the repositories
-  yum: name={{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].repos }}
-       state=present
+  yum:
+    name: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].repos }}'
+    state: present
 
 - name: Install all required packages
-  yum: name={{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].packages }}
-       state=latest
+  yum:
+    name: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].packages }}'
+    state: latest
   notify:
     - Stop iptables
 
+- name: Install virtual environment
+  pip:
+    name: virtualenv
+    executable: /usr/bin/pip3.6
+    state: latest
+
+- name: Create virtualenv root directory
+  file:
+    path: '{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}'
+    state: directory
+    owner: jupyter
+    group: jupyter
+    mode: 0755
+
+- name: Set up virtual environment
+  shell: "virtualenv -p python3.6 {{ jupyter_notebook.virtualenv | default('/data/jupyter') }}"
+  become_user: jupyter
+  changed_when: no
+
 - name: Install all Python packages
-  pip: name={{ item }}
-       executable=/usr/bin/pip3.6
-       state=latest
-  with_items: '{{ jupyter_notebook.python_packages }}'
+  pip:
+    name: '{{ jupyter_notebook.python_packages }}'
+    virtualenv: '{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}'
+    state: latest
+  become_user: jupyter
 
 - name: Download NLTK data
-  shell: python3.6 -m nltk.downloader -d /usr/local/share/nltk_data all
+  shell: "{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}/bin/python3.6 -m nltk.downloader -d /usr/local/share/nltk_data all"
 
 - name: Fix umask issue when installing packages with pip
   shell: 'find {{ item }} -type d -exec chmod 755 {} \;'
   with_items:
     - '/data/nltk_data/'
-    - '/usr/lib/python3.6/'
-    - '/usr/lib64/python3.6/'
-    - '/usr/share/'
 
 - name: Fix umask issue when installing packages with pip
   shell: 'find {{ item }} -type f -exec chmod 644 {} \;'
   with_items:
     - '/data/nltk_data/'
-    - '/usr/lib/python3.6/'
-    - '/usr/lib64/python3.6/'
-    - '/usr/share/'

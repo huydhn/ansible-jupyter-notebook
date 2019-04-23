@@ -7,25 +7,28 @@
 
 - block:
   - name: Create a dedicated group to run Jupyter
-    group: name=jupyter
-           gid=2841
-           system=yes
-           state=present
+    group:
+      name: jupyter
+      gid: 2841
+      system: yes
+      state: present
 
   - name: Create a dedicated user to run Jupyter
-    user: name=jupyter
-          groups=jupyter
-          uid=2841
-          system=yes
-          createhome=yes
-          state=present
+    user:
+      name: jupyter
+      groups: jupyter
+      uid: 2841
+      system: yes
+      createhome: yes
+      state: present
 
   - name: Setup Jupyter notebook directory
-    file: path=/data
-          state=directory
-          owner=jupyter
-          group=jupyter
-          mode=0777
+    file:
+      path: /data
+      state: directory
+      owner: jupyter
+      group: jupyter
+      mode: 0777
   tags: ['always']
 
 - import_tasks: format.yml
