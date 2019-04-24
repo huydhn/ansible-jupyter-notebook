@@ -68,6 +68,7 @@ jupyter_notebook:
     - scipy
     - sklearn-crfsuite
     - sklearn-pandas
+    - seaborn
     - statsmodels
     - tensorboard
     - tensorflow
