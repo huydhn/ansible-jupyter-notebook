@@ -19,7 +19,7 @@
 
 - name: Create virtualenv root directory
   file:
-    path: '{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}'
+    path: "{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}"
     state: directory
     owner: jupyter
     group: jupyter
@@ -33,7 +33,7 @@
 - name: Install all Python packages
   pip:
     name: '{{ jupyter_notebook.python_packages }}'
-    virtualenv: '{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}'
+    virtualenv: "{{ jupyter_notebook.virtualenv | default('/data/jupyter') }}"
     state: latest
   become_user: jupyter
 
